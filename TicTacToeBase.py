@@ -7,7 +7,7 @@ class TicTacToeBase:
         # 1: x Mark
         # 2: Empty placeholder
         self.board = np.array([[1, 2, 1],
-                               [1, 1, 2],
+                               [2, 1, 2],
                                [1, 2, 2]
                           ])
         self.boardPositions = np.array([[0, 1, 2],
@@ -67,27 +67,31 @@ class TicTacToeBase:
         return position
 
     # TODO: Terminate game and show winner, or draw.
-    def endGame():
+    def endGame(self):
         pass
 
     def checkForWinner(self, player: int):
+        flatBoard = self.board.flatten()
+
         # horizontal or vertical win
         for i in range(len(self.board)):
             #row
             rows = all(self.board[i] == player)
 
             #columns 
-            columns = all(self.board.flatten()[i::3] == player)
+            # Slice the flat board starting at i (0, 1, 2),
+            # ending at the end with a step size of 3.
+            columns = all(flatBoard[i::3] == player)
             if rows or columns:
                 self.endGame()
                 return
         # Slice the board array starting from zero (top leading corner) 
         # with a step of four (passing through the middle ending in bottom trailing)
-        diagonal1 = all(self.board.flatten()[0::4] == player)
+        diagonal1 = all(flatBoard[0::4] == player)
 
         # Slice the board array starting from two (top trailing) with a step size
         # of two (passing throuhg four, the center, ending in bottom leading)
-        diagonal2 = all(self.board.flatten()[2::2] == player) 
+        diagonal2 = all(flatBoard[2:8:2] == player) 
         if diagonal1 or diagonal2:
             self.endGame()
             return
