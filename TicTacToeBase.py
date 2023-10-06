@@ -6,9 +6,9 @@ class TicTacToeBase:
         # 0: o Mark
         # 1: x Mark
         # 2: Empty placeholder
-        self.board = np.array([[1, 2, 1],
-                               [2, 1, 2],
-                               [1, 2, 2]
+        self.board = np.array([[2, 2, 2],
+                               [2, 2, 2],
+                               [2, 2, 2]
                           ])
         self.boardPositions = np.array([[0, 1, 2],
                                         [3, 4, 5],
@@ -48,8 +48,12 @@ class TicTacToeBase:
     def addMark(self, player: int, position: int):
         index = np.where(self.boardPositions == position)
         self.board[index] = player
+        game.showBoard()
+        self.checkForWinner(player)
 
     def inputPosition(self):
+        if self.gameOver:
+            return
         while True:
             try:
                 position = int(input('Enter an available cell: '))
@@ -67,8 +71,14 @@ class TicTacToeBase:
         return position
 
     # TODO: Terminate game and show winner, or draw.
-    def endGame(self):
-        pass
+    def endGame(self, player: int):
+        self.winner = player
+        self.gameOver = True
+
+        if player == 0:
+            print('Player o won')
+        else:
+            print('Player x won')
 
     def checkForWinner(self, player: int):
         flatBoard = self.board.flatten()
@@ -83,7 +93,7 @@ class TicTacToeBase:
             # ending at the end with a step size of 3.
             columns = all(flatBoard[i::3] == player)
             if rows or columns:
-                self.endGame()
+                self.endGame(player)
                 return
         # Slice the board array starting from zero (top leading corner) 
         # with a step of four (passing through the middle ending in bottom trailing)
@@ -93,19 +103,18 @@ class TicTacToeBase:
         # of two (passing throuhg four, the center, ending in bottom leading)
         diagonal2 = all(flatBoard[2:8:2] == player) 
         if diagonal1 or diagonal2:
-            self.endGame()
+            self.endGame(player)
             return
         if self.availableCells() == []:
             # draw
             pass
 
-game = TicTacToeBase()
-# while not game.gameOver:
-#     game.showBoard()
-#     nextPosition = game.inputPosition()
-#     game.addMark(0, nextPosition)
-#     game.showBoard()
-#     nextPosition = game.inputPosition()
-#     game.addMark(1, nextPosition)
-    
-game.checkForWinner(1)
+if __name__ == "__main__":
+    game = TicTacToeBase()
+    game.showBoard()
+    while not game.gameOver:
+        nextPosition = game.inputPosition()
+        game.addMark(0, nextPosition)
+        nextPosition = game.inputPosition()
+        game.addMark(1, nextPosition)
+        
