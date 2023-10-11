@@ -13,5 +13,8 @@ class MiniTicTacToe(TicTacToeBase):
         print(f'                   Column {self.__column} Row {self.__row}')
         return super().showBoard()
 
-miniGame = MiniTicTacToe(7)
-miniGame.showBoard()
+if __name__ == "__main__":
+    miniGame = MiniTicTacToe(7)
+    miniGame.showBoard()
+    miniGame.startGame()
+
