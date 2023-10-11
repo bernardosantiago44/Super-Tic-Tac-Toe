@@ -109,12 +109,15 @@ class TicTacToeBase:
             # draw
             pass
 
+    def startGame(self):
+        while not self.gameOver:
+            nextPosition = self.inputPosition()
+            self.addMark(0, nextPosition)
+            nextPosition = self.inputPosition()
+            self.addMark(1, nextPosition)
+
+
 if __name__ == "__main__":
     game = TicTacToeBase()
     game.showBoard()
-    while not game.gameOver:
-        nextPosition = game.inputPosition()
-        game.addMark(0, nextPosition)
-        nextPosition = game.inputPosition()
-        game.addMark(1, nextPosition)
-        
+    game.startGame() 
