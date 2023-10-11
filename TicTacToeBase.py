@@ -48,7 +48,7 @@ class TicTacToeBase:
     def addMark(self, player: int, position: int):
         index = np.where(self.boardPositions == position)
         self.board[index] = player
-        game.showBoard()
+        self.showBoard()
         self.checkForWinner(player)
 
     def inputPosition(self):
