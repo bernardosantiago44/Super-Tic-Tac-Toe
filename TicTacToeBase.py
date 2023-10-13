@@ -2,6 +2,8 @@ import numpy as np
 from Exceptions import NotAvailable
 
 class TicTacToeBase:
+    # Constructor class
+    #    Takes no parameters.
     def __init__(self):
         # 0: o Mark
         # 1: x Mark
@@ -19,6 +21,7 @@ class TicTacToeBase:
         self.gameOver = False
     
     def showBoard(self):
+        """Shows a 3x3 grid of the game's board."""
         baseBoard = """
                      {} | {} | {}
                     ---+---+---
@@ -26,6 +29,7 @@ class TicTacToeBase:
                     ---+---+---
                      {} | {} | {}
                     """
+        # Internal mapping of the board
         boardList = []
         internalBoard = self.board.flatten()
         for i in range(0, 9):
@@ -38,15 +42,34 @@ class TicTacToeBase:
         print(baseBoard.format(*boardList))
     
     def availableCells(self):
+        """Returns a list with all the available cells for playing.
+           Returns [] if no spaces are available."""
+        # Get out existing board replacing 2's (empty cells)
+        #  with True and any other value with False.
+        # 
         open = (self.board == 2).flatten()
         available = []
+        
+        # Iterate through the array and keep only 
+        # the positions of the empty cells.
         for i in range(0, len(open)):
             if open[i]:
                 available.append(i)
         return available
     
     def addMark(self, player: int, position: int):
+        """Add a player's mark to certain position in the board. \n
+        ## Args:
+            player (int): Player's number.
+            position (int): Position in the board, previously validated [0, 8].
+        """
+        
+        # Find the bidimentional index of the board
+        # where the `position` lies.
         index = np.where(self.boardPositions == position)
+
+        # Replace such index with the `player`'s mark.
+        # Show the board and check if the player won.
         self.board[index] = player
         self.showBoard()
         self.checkForWinner(player)
@@ -70,7 +93,6 @@ class TicTacToeBase:
             break
         return position
 
-    # TODO: Terminate game and show winner, or draw.
     def endGame(self, player: int):
         self.winner = player
         self.gameOver = True
@@ -85,7 +107,8 @@ class TicTacToeBase:
 
         # horizontal or vertical win
         for i in range(len(self.board)):
-            #row
+            # Check if all 3 elements of a single row
+            # are all True. This results in a winner being found.
             rows = all(self.board[i] == player)
 
             #columns 
@@ -95,6 +118,7 @@ class TicTacToeBase:
             if rows or columns:
                 self.endGame(player)
                 return
+            
         # Slice the board array starting from zero (top leading corner) 
         # with a step of four (passing through the middle ending in bottom trailing)
         diagonal1 = all(flatBoard[0::4] == player)
