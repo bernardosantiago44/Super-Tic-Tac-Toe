@@ -8,6 +8,7 @@ class SuperTicTacToe(TicTacToeBase):
 
         super().__init__()
         print('Instrucciones')
+        self.showBoard()
 
     def showBoard(self):
         print('          --- Super Tic Tac Toe Board ---')
@@ -26,13 +27,15 @@ class SuperTicTacToe(TicTacToeBase):
                 print('Please enter a number from 0 to 8.')
                 continue
             break
+        print('\n\n')
     
     def startGame(self):
-        self.inputNextGamePosition()
-        miniGame = MiniTicTacToe(self.nextGamePosition)
-        miniGame.showBoard()
-        miniGame.startGame()
-        self.addMark(miniGame.winner, self.nextGamePosition)
+        while not self.gameOver:
+            self.inputNextGamePosition()
+            miniGame = MiniTicTacToe(self.nextGamePosition)
+            miniGame.showBoard()
+            miniGame.startGame()
+            self.addMark(miniGame.winner, self.nextGamePosition)
     
 superGame = SuperTicTacToe()
 superGame.startGame()
