@@ -102,6 +102,16 @@ class TicTacToeBase:
         else:
             print('Player x won')
 
+    def restartGame(self):
+        self.winner = -1
+        self.gameOver = False
+        print('Draw. Please re-play game.')
+
+        self.board = np.array([[2, 2, 2],
+                               [2, 2, 2],
+                               [2, 2, 2]
+                          ])
+
     def checkForWinner(self, player: int):
         flatBoard = self.board.flatten()
 
@@ -130,8 +140,8 @@ class TicTacToeBase:
             self.endGame(player)
             return
         if self.availableCells() == []:
-            # draw
-            pass
+            self.restartGame()
+            self.showBoard()
 
     def startGame(self):
         while not self.gameOver:
